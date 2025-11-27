@@ -6,11 +6,22 @@ PORT = 5000
 
 cinema = {
     "Avatar 3": {
-        "16:00": {"price": 50000, "seats": [0, 0, 0, 0, 0]},
-        "19:00": {"price": 60000, "seats": [0, 0, 0, 0, 0]}
+        "16:00": {
+            "price": 50000, "seats": [0, 0, 0, 0, 0]
+            },
+        "19:00": {
+            "price": 60000, "seats": [0, 0, 0, 0, 0]
+            }
     },
     "Interstellar": {
-        "18:00": {"price": 40000, "seats": [0, 0, 0, 0, 0]}
+        "18:00": {
+            "price": 40000, "seats": [0, 0, 0, 0, 0]
+            }
+    },
+    "Zootopia 2": {
+        "20:00": {
+            "price": 30000, "seats": [0, 0, 0, 0, 0]
+            }
     }
 }
 
@@ -64,7 +75,7 @@ def client_thread(conn, addr):
 
     nickname = conn.recv(1024).decode().strip()
     clients[conn] = nickname
-    balances[nickname] = 100000  
+    balances[nickname] = 100000
 
     send(conn, "Connected to CINEMA SIMPLE SERVER")
     send(conn, f"Your balance: {balances[nickname]}")
@@ -84,7 +95,7 @@ def client_thread(conn, addr):
                 send(conn, "=== MOVIES ===")
                 for m in cinema:
                     send(conn, f"- {m}")
-                send(conn, "END")
+                
 
 
             elif command == "GET":
@@ -98,13 +109,25 @@ def client_thread(conn, addr):
                 for t in cinema[movie]:
                     session = cinema[movie][t]
                     send(conn, f"{t} | price={session['price']} | seats={session['seats']}")
-                send(conn, "END")
-
 
             elif command == "BOOK":
+                if len(parts) < 4:
+                    send(conn, "ERROR: Invalid command format.")
+
                 movie = parts[1]
+
+                if movie not in cinema:
+                    send(conn, "ERROR: Movie not found.")
+                    continue
                 time = parts[2]
-                seat = int(parts[3])
+                if time not in cinema[movie]:
+                    send(conn, "ERROR: Time not found:")
+                    continue
+                try:
+                    seat = int(parts[3])
+                except ValueError:
+                    send(conn, "ERROR: The seat must to be a number.")
+                    continue
                 handle_booking(nickname, movie, time, seat, conn)
 
             elif command == "BAL":
@@ -127,7 +150,7 @@ def start_server():
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((HOST, PORT))
-    server_socket.listen(10)
+    server_socket.listen(5)
 
     while True:
         conn, addr = server_socket.accept()
