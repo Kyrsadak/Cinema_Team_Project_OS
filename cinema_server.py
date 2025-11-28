@@ -104,8 +104,8 @@ def client_thread(conn, addr):
 
             elif command == "GET":
                 movie = parts[1]
-
-                if movie not in cinema:
+                lowerMovie = movie.lower()
+                if lowerMovie not in cinema:
                     send(conn, "ERROR: Movie not found.")
                     continue
 

@@ -75,8 +75,8 @@ def main():
         elif choice == "3":
             while True:
                 movie = input("Enter movie name: ").strip()
-                upperMovie = movie.lower()
-                if upperMovie not in cinema:
+                lowerMovie = movie.lower()
+                if lowerMovie not in cinema:
                     print("Wrong name, try again.")
                 else:
                     break
