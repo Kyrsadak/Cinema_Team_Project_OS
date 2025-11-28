@@ -63,7 +63,7 @@ def main():
         print("4) Check balance")
         print("5) Exit")
 
-        choice = input("> ").strip()
+        choice = input("\n> ").strip()
 
         if choice == "1":
             sock.send("LIST".encode())
@@ -74,17 +74,19 @@ def main():
 
         elif choice == "3":
             while True:
-                movie = input("Enter movie name: ").strip()
-                lowerMovie = movie.lower()
+                movie_input = input("Enter movie name: ").strip()
+
+                lowerMovie = movie_input.lower()
                 if lowerMovie not in cinema:
                     print("Wrong name, try again.")
                 else:
+                    movie = lowerMovie
                     break
             
             while True:   
-                print(f"Available time for {movie}")
+                print(f"Available time for {movie_input}")
                 for t in cinema[movie].keys():
-                    print(f"- {t}")
+                   print(f"- {t}")
                 time = input("Enter session time (ex: 16:00): ").strip()
 
                 if time not in cinema[movie]:
@@ -109,7 +111,7 @@ def main():
                 else:
                     break
 
-            sock.send(f"BOOK|{movie}|{time}|{seat}".encode())
+            sock.send(f"BOOK|{lowerMovie}|{time}|{seat}".encode())
 
         elif choice == "4":
             sock.send("BAL".encode())
