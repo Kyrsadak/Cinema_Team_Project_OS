@@ -77,12 +77,17 @@ def main():
             
             while True:
                 time = input("Enter session time (ex: 16:00): ").strip() 
-                if time  not in cinema[movie]:
+                if time not in cinema[movie]:
                     print("Wrong time, try again.")
                 else:
                     break
             
-            seat = input("Enter seat number (0-4): ").strip()
+            while True:
+                seat = input("Enter seat number (0-4): ").strip()
+                if seat not in ["0", "1", "2", "3", "4"]:
+                    print("Invalid seat, try again.")
+                else:
+                    break
 
             sock.send(f"BOOK|{movie}|{time}|{seat}".encode())
 
@@ -93,7 +98,8 @@ def main():
             print("Goodbye!")
             sock.close()
             break
-
+        elif choice == "!refill":
+            sock.send("!refill".encode())
         else:
             print("Invalid option. Try again.")
 
