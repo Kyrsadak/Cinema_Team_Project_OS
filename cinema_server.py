@@ -5,7 +5,7 @@ HOST = "0.0.0.0"
 PORT = int(input("Enter the port for server (1024-49151): "))
 
 cinema = {
-    "Avatar 3": {
+    "avatar 3": {
         "16:00": {
             "price": 50000, "seats": [0, 0, 0, 0, 0]
             },
@@ -13,15 +13,20 @@ cinema = {
             "price": 60000, "seats": [0, 0, 0, 0, 0]
             }
     },
-    "Interstellar": {
+    "interstellar": {
         "18:00": {
             "price": 40000, "seats": [0, 0, 0, 0, 0]
             }
     },
-    "Zootopia 2": {
+    "zootopia 2": {
         "20:00": {
             "price": 30000, "seats": [0, 0, 0, 0, 0]
             }
+    },
+    "formula 1": {
+        "15:00": {
+            "price": 45000, "seats": [0, 0, 0, 0, 0]
+        }
     }
 }
 

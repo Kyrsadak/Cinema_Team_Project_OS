@@ -2,7 +2,7 @@ import socket
 import threading
 
 cinema = {
-    "Avatar 3": {
+    "avatar 3": {
         "16:00": {
             "price": 50000, "seats": [0, 0, 0, 0, 0]
             },
@@ -10,15 +10,20 @@ cinema = {
             "price": 60000, "seats": [0, 0, 0, 0, 0]
             }
     },
-    "Interstellar": {
+    "interstellar": {
         "18:00": {
             "price": 40000, "seats": [0, 0, 0, 0, 0]
             }
     },
-    "Zootopia 2": {
+    "zootopia 2": {
         "20:00": {
             "price": 30000, "seats": [0, 0, 0, 0, 0]
             }
+    },
+    "formula 1": {
+        "15:00": {
+            "price": 45000, "seats": [0, 0, 0, 0, 0]
+        }
     }
 }
 
@@ -70,19 +75,34 @@ def main():
         elif choice == "3":
             while True:
                 movie = input("Enter movie name: ").strip()
+                upperMovie = movie.lower()
                 if movie not in cinema:
                     print("Wrong name, try again.")
                 else:
                     break
             
-            while True:
-                time = input("Enter session time (ex: 16:00): ").strip() 
+            while True:   
+                print(f"Available time for {movie}")
+                for t in cinema[movie].keys():
+                    print(f"- {t}")
+                time = input("Enter session time (ex: 16:00): ").strip()
+
                 if time not in cinema[movie]:
                     print("Wrong time, try again.")
                 else:
                     break
-            
+                
             while True:
+                
+                seats = cinema[movie][time]["seats"]
+
+                seat_status = ["Free" if s == 0 else "Taken" for s in seats]
+
+                print(f"Available time for {movie} at {time}")
+
+                for i, status in enumerate(seat_status):
+                    print(f"Seat {i}: {status}")
+
                 seat = input("Enter seat number (0-4): ").strip()
                 if seat not in ["0", "1", "2", "3", "4"]:
                     print("Invalid seat, try again.")
