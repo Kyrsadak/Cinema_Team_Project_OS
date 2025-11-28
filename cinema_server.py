@@ -64,22 +64,21 @@ def handle_booking(nick, movie, time, seat, conn):
 
     session["seats"][seat] = 1
     balances[nick] -= price
+    print(f"[PURCHASE] {nick} bought seat {seat} for '{movie}' at {time}. Remaining balace = {balances[nick]}")
 
     send(conn, f"SUCCESS: Seat {seat} booked for '{movie}' at {time}. Remaining balance: {balances[nick]}")
 
 
 
 def client_thread(conn, addr):
-    print(f"[SERVER] New client: {addr}")
-
 
     nickname = conn.recv(1024).decode().strip()
     clients[conn] = nickname
     balances[nickname] = 100000
 
-    send(conn, "Connected to CINEMA SIMPLE SERVER")
+    send(conn, "Connected to CINEMA SERVER")
     send(conn, f"Your balance: {balances[nickname]}")
-
+    print(f"[SERVER] {nickname} connected to the server from {addr}, balance {balances[nickname]}")
     try:
         while True:
             data = conn.recv(1024)
@@ -127,7 +126,10 @@ def client_thread(conn, addr):
 
             elif command == "BAL":
                 send(conn, f"BALANCE: {balances[nickname]}")
-
+            elif command == "!refill":
+                balances[nickname] += 20000
+                send(conn, f"The cheat code was successfully executed. Current balance {balances[nickname]}")
+                
             else:
                 send(conn, "ERROR: Unknown command.")
 
@@ -135,7 +137,7 @@ def client_thread(conn, addr):
         print(f"[SERVER] Error with client {addr}")
 
     finally:
-        print(f"[SERVER] Client disconnected: {addr}")
+        print(f"[SERVER] Client {clients[conn]} disconnected")
         del clients[conn]
         conn.close()
 
