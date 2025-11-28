@@ -70,7 +70,8 @@ def main():
 
         elif choice == "2":
             movie = input("Enter movie name: ").strip()
-            sock.send(f"GET|{movie}".encode())
+            lowerMovie = movie.lower()
+            sock.send(f"GET|{lowerMovie}".encode())
 
         elif choice == "3":
             while True:

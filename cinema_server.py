@@ -4,6 +4,32 @@ import threading
 HOST = "0.0.0.0"
 PORT = int(input("Enter the port for server (1024-49151): "))
 
+cinema_origin = {
+    "Avatar 3": {
+        "16:00": {
+            "price": 50000, "seats": [0, 0, 0, 0, 0]
+            },
+        "19:00": {
+            "price": 60000, "seats": [0, 0, 0, 0, 0]
+            }
+    },
+    "Interstellar": {
+        "18:00": {
+            "price": 40000, "seats": [0, 0, 0, 0, 0]
+            }
+    },
+    "Zootopia 2": {
+        "20:00": {
+            "price": 30000, "seats": [0, 0, 0, 0, 0]
+            }
+    },
+    "Formula 1": {
+        "15:00": {
+            "price": 45000, "seats": [0, 0, 0, 0, 0]
+        }
+    }
+}
+
 cinema = {
     "avatar 3": {
         "16:00": {
@@ -97,7 +123,7 @@ def client_thread(conn, addr):
 
             if command == "LIST":
                 send(conn, "=== MOVIES ===")
-                for m in cinema:
+                for m in cinema_origin:
                     send(conn, f"- {m}")
                 
 
