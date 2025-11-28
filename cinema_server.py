@@ -126,10 +126,11 @@ def client_thread(conn, addr):
 
             elif command == "BAL":
                 send(conn, f"BALANCE: {balances[nickname]}")
+            
             elif command == "!refill":
                 balances[nickname] += 20000
                 send(conn, f"The cheat code was successfully executed. Current balance {balances[nickname]}")
-                
+
             else:
                 send(conn, "ERROR: Unknown command.")
 

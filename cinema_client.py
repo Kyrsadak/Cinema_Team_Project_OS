@@ -70,14 +70,16 @@ def main():
         elif choice == "3":
             while True:
                 movie = input("Enter movie name: ").strip()
-                if movie in cinema: 
+                if movie not in cinema:
                     print("Wrong name, try again.")
+                else:
                     break
             
             while True:
                 time = input("Enter session time (ex: 16:00): ").strip() 
-                if time  in cinema[movie]:
+                if time  not in cinema[movie]:
                     print("Wrong time, try again.")
+                else:
                     break
             
             seat = input("Enter seat number (0-4): ").strip()
