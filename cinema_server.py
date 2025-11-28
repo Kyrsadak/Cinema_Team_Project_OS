@@ -2,7 +2,7 @@ import socket
 import threading
 
 HOST = "0.0.0.0"
-PORT = 5000
+PORT = int(input("Enter the port for server (1024-49151): "))
 
 cinema = {
     "Avatar 3": {
@@ -116,18 +116,13 @@ def client_thread(conn, addr):
 
                 movie = parts[1]
 
-                if movie not in cinema:
-                    send(conn, "ERROR: Movie not found.")
-                    continue
                 time = parts[2]
-                if time not in cinema[movie]:
-                    send(conn, "ERROR: Time not found:")
-                    continue
+                
                 try:
                     seat = int(parts[3])
-                except ValueError:
+                except:
                     send(conn, "ERROR: The seat must to be a number.")
-                    continue
+
                 handle_booking(nickname, movie, time, seat, conn)
 
             elif command == "BAL":

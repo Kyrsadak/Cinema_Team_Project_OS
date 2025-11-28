@@ -1,6 +1,27 @@
 import socket
 import threading
 
+cinema = {
+    "Avatar 3": {
+        "16:00": {
+            "price": 50000, "seats": [0, 0, 0, 0, 0]
+            },
+        "19:00": {
+            "price": 60000, "seats": [0, 0, 0, 0, 0]
+            }
+    },
+    "Interstellar": {
+        "18:00": {
+            "price": 40000, "seats": [0, 0, 0, 0, 0]
+            }
+    },
+    "Zootopia 2": {
+        "20:00": {
+            "price": 30000, "seats": [0, 0, 0, 0, 0]
+            }
+    }
+}
+
 def receive_messages(sock):
     while True:
         try:
@@ -47,9 +68,20 @@ def main():
             sock.send(f"GET|{movie}".encode())
 
         elif choice == "3":
-            movie = input("Enter movie name: ").strip()
-            time = input("Enter session time (ex: 16:00): ").strip()
+            while True:
+                movie = input("Enter movie name: ").strip()
+                if movie in cinema: 
+                    print("Wrong name, try again.")
+                    break
+            
+            while True:
+                time = input("Enter session time (ex: 16:00): ").strip() 
+                if time  in cinema[movie]:
+                    print("Wrong time, try again.")
+                    break
+            
             seat = input("Enter seat number (0-4): ").strip()
+
             sock.send(f"BOOK|{movie}|{time}|{seat}".encode())
 
         elif choice == "4":
