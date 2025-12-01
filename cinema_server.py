@@ -2,10 +2,12 @@ import socket
 import threading
 
 HOST = "0.0.0.0"
-PORT = 5000
+PORT = int(input("Enter the port for server (1024-49151): "))
+
+cinema_origin = {"Avatar 3", "Interstellar", "Zootopia 2", "Formula 1", "Stattrack", "Superman", "Harry Potter", "People in black"}
 
 cinema = {
-    "Avatar 3": {
+    "avatar 3": {
         "16:00": {
             "price": 50000, "seats": [0, 0, 0, 0, 0]
             },
@@ -13,16 +15,51 @@ cinema = {
             "price": 60000, "seats": [0, 0, 0, 0, 0]
             }
     },
-    "Interstellar": {
+    "interstellar": {
         "18:00": {
             "price": 40000, "seats": [0, 0, 0, 0, 0]
             }
     },
-    "Zootopia 2": {
+    "zootopia 2": {
+        "18:00": {
+            "price": 40000, "seats": [0, 0, 0, 0, 0]
+            },
         "20:00": {
-            "price": 30000, "seats": [0, 0, 0, 0, 0]
-            }
-    }
+            "price": 50000, "seats": [0, 0, 0, 0, 0]
+            },
+    },
+    "formula 1": {
+        "15:00": {
+            "price": 45000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+    "stattrack": {
+        "16:00": {
+            "price": 60000, "seats": [0, 0, 0, 0, 0]
+        },
+        "18:00": {
+            "price": 70000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+    "superman": {
+        "18:00": {
+            "price": 45000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+     "harry potter": {
+        "16:00": {
+            "price": 50000, "seats": [0, 0, 0, 0, 0]
+        },
+        "20:00": {
+            "price": 50000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+     "people in black": {
+        "12:00": {
+            "price": 60000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+
 }
 
 clients = {}    
@@ -64,22 +101,21 @@ def handle_booking(nick, movie, time, seat, conn):
 
     session["seats"][seat] = 1
     balances[nick] -= price
+    print(f"[PURCHASE] {nick} bought seat {seat} for '{movie}' at {time}. Remaining balace = {balances[nick]}")
 
     send(conn, f"SUCCESS: Seat {seat} booked for '{movie}' at {time}. Remaining balance: {balances[nick]}")
 
 
 
 def client_thread(conn, addr):
-    print(f"[SERVER] New client: {addr}")
-
 
     nickname = conn.recv(1024).decode().strip()
     clients[conn] = nickname
     balances[nickname] = 100000
 
-    send(conn, "Connected to CINEMA SIMPLE SERVER")
+    send(conn, "Connected to CINEMA SERVER")
     send(conn, f"Your balance: {balances[nickname]}")
-
+    print(f"[SERVER] {nickname} connected to the server from {addr}, balance {balances[nickname]}")
     try:
         while True:
             data = conn.recv(1024)
@@ -93,15 +129,15 @@ def client_thread(conn, addr):
 
             if command == "LIST":
                 send(conn, "=== MOVIES ===")
-                for m in cinema:
+                for m in cinema_origin:
                     send(conn, f"- {m}")
                 
 
 
             elif command == "GET":
                 movie = parts[1]
-
-                if movie not in cinema:
+                lowerMovie = movie.lower()
+                if lowerMovie not in cinema:
                     send(conn, "ERROR: Movie not found.")
                     continue
 
@@ -116,22 +152,21 @@ def client_thread(conn, addr):
 
                 movie = parts[1]
 
-                if movie not in cinema:
-                    send(conn, "ERROR: Movie not found.")
-                    continue
                 time = parts[2]
-                if time not in cinema[movie]:
-                    send(conn, "ERROR: Time not found:")
-                    continue
+                
                 try:
                     seat = int(parts[3])
-                except ValueError:
+                except:
                     send(conn, "ERROR: The seat must to be a number.")
-                    continue
+
                 handle_booking(nickname, movie, time, seat, conn)
 
             elif command == "BAL":
                 send(conn, f"BALANCE: {balances[nickname]}")
+            
+            elif command == "!refill":
+                balances[nickname] += 20000
+                send(conn, f"The cheat code was successfully executed. Current balance {balances[nickname]}")
 
             else:
                 send(conn, "ERROR: Unknown command.")
@@ -140,7 +175,7 @@ def client_thread(conn, addr):
         print(f"[SERVER] Error with client {addr}")
 
     finally:
-        print(f"[SERVER] Client disconnected: {addr}")
+        print(f"[SERVER] Client {clients[conn]} disconnected")
         del clients[conn]
         conn.close()
 
