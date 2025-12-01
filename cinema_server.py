@@ -4,31 +4,7 @@ import threading
 HOST = "0.0.0.0"
 PORT = int(input("Enter the port for server (1024-49151): "))
 
-cinema_origin = {
-    "Avatar 3": {
-        "16:00": {
-            "price": 50000, "seats": [0, 0, 0, 0, 0]
-            },
-        "19:00": {
-            "price": 60000, "seats": [0, 0, 0, 0, 0]
-            }
-    },
-    "Interstellar": {
-        "18:00": {
-            "price": 40000, "seats": [0, 0, 0, 0, 0]
-            }
-    },
-    "Zootopia 2": {
-        "20:00": {
-            "price": 30000, "seats": [0, 0, 0, 0, 0]
-            }
-    },
-    "Formula 1": {
-        "15:00": {
-            "price": 45000, "seats": [0, 0, 0, 0, 0]
-        }
-    }
-}
+cinema_origin = {"Avatar 3", "Interstellar", "Zootopia 2", "Formula 1", "Stattrack", "Superman", "Harry Potter", "People in black"}
 
 cinema = {
     "avatar 3": {
@@ -45,15 +21,45 @@ cinema = {
             }
     },
     "zootopia 2": {
+        "18:00": {
+            "price": 40000, "seats": [0, 0, 0, 0, 0]
+            },
         "20:00": {
-            "price": 30000, "seats": [0, 0, 0, 0, 0]
-            }
+            "price": 50000, "seats": [0, 0, 0, 0, 0]
+            },
     },
     "formula 1": {
         "15:00": {
             "price": 45000, "seats": [0, 0, 0, 0, 0]
         }
-    }
+    },
+    "stattrack": {
+        "16:00": {
+            "price": 60000, "seats": [0, 0, 0, 0, 0]
+        },
+        "18:00": {
+            "price": 70000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+    "superman": {
+        "18:00": {
+            "price": 45000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+     "harry potter": {
+        "16:00": {
+            "price": 50000, "seats": [0, 0, 0, 0, 0]
+        },
+        "20:00": {
+            "price": 50000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+     "people in black": {
+        "12:00": {
+            "price": 60000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+
 }
 
 clients = {}    

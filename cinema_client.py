@@ -1,6 +1,9 @@
 import socket
 import threading
 
+cinema_origin = {"Avatar 3", "Interstellar", "Zootopia 2", "Formula 1", "Stattrack", "Superman", "Harry Potter", "People in black"}
+
+
 cinema = {
     "avatar 3": {
         "16:00": {
@@ -16,15 +19,45 @@ cinema = {
             }
     },
     "zootopia 2": {
+        "18:00": {
+            "price": 40000, "seats": [0, 0, 0, 0, 0]
+            },
         "20:00": {
-            "price": 30000, "seats": [0, 0, 0, 0, 0]
-            }
+            "price": 50000, "seats": [0, 0, 0, 0, 0]
+            },
     },
     "formula 1": {
         "15:00": {
             "price": 45000, "seats": [0, 0, 0, 0, 0]
         }
-    }
+    },
+    "stattrack": {
+        "16:00": {
+            "price": 60000, "seats": [0, 0, 0, 0, 0]
+        },
+        "18:00": {
+            "price": 70000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+    "superman": {
+        "18:00": {
+            "price": 45000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+     "harry potter": {
+        "16:00": {
+            "price": 50000, "seats": [0, 0, 0, 0, 0]
+        },
+        "20:00": {
+            "price": 50000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+     "people in black": {
+        "12:00": {
+            "price": 60000, "seats": [0, 0, 0, 0, 0]
+        }
+    },
+
 }
 
 def receive_messages(sock):
@@ -121,8 +154,10 @@ def main():
             print("Goodbye!")
             sock.close()
             break
+        
         elif choice == "!refill":
             sock.send("!refill".encode())
+            
         else:
             print("Invalid option. Try again.")
 
